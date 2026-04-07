@@ -1,0 +1,39 @@
+body{
+    background-color: rgb(167, 167, 240);
+}
+#main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 7%;
+}
+
+
+input,button{
+    height: 35px;
+    text-align: center;
+    margin: 5%;
+    border-radius: 25px;
+    width: 350px;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+button{
+    background-color: black;
+    color: white;
+}
+h2{
+    background-color: green;
+    color: white;
+    padding: 20px;
+    border-radius: 25px;
+    border-style: dashed;
+}
