@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="main">
+        <h2>RHIMBS School Management System</h2>
+
+        <div class="panel">
+            <p id="welcome">Loading...</p>
+            <p>Active semester: <strong id="semester"></strong></p>
+            <button id="logout">Logout</button>
+        </div>
+
+        <div id="cards">
+            <div class="card"><span id="students">0</span>Students</div>
+            <div class="card"><span id="teachers">0</span>Teachers</div>
+            <div class="card"><span id="courses">0</span>Courses</div>
+        </div>
+
+        <div class="panel">
+            <h3>Students</h3>
+            <table>
+                <thead>
+                    <tr><th>Name</th><th>Matric No</th><th>Email</th><th>Level</th></tr>
+                </thead>
+                <tbody id="studentRows"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        async function loadDashboard() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const res = await fetch(API_URL + '/dashboard.php', {
+                headers: { 'X-Auth-Token': token },
+            });
+            const data = await res.json();
+
+            // Token expired or invalid -> back to login
+            if (res.status === 401) {
+                localStorage.removeItem('token');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            document.getElementById('welcome').textContent =
+                'Welcome, ' + data.user.name + ' (' + data.user.role + ')';
+            document.getElementById('semester').textContent = data.semester;
+            document.getElementById('students').textContent = data.counts.students;
+            document.getElementById('teachers').textContent = data.counts.teachers;
+            document.getElementById('courses').textContent = data.counts.courses;
+
+            const tbody = document.getElementById('studentRows');
+            data.students.forEach(function (s) {
+                const tr = document.createElement('tr');
+                [s.name, s.matric_no, s.email, s.level].forEach(function (value) {
+                    const td = document.createElement('td');
+                    td.textContent = value; // textContent is safe from HTML injection
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+        }
+
+        document.getElementById('logout').addEventListener('click', function () {
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+        });
+
+        loadDashboard();
+    </script>
+</body>
+</html>

@@ -3,20 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Signup</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="main">
         <h2>RHIMBS School Management System</h2>
-        <form method="post" action="http://localhost/backend/signup.php">
-            
-             <input type="text" name="name" placeholder="enter your name"/>
-            <input type="email" name="email" placeholder="enter your email"/>
-             <input type="password" name="password" placeholder="enter your password"/>
-              <button type="submit" name="signup">Signup</button>
-              <p>Already have an account? <a href="login.html">Login</a></p>
+        <form id="signupForm">
+            <input type="text" name="name" placeholder="enter your name" required/>
+            <input type="email" name="email" placeholder="enter your email" required/>
+            <input type="password" name="password" placeholder="enter your password" required/>
+            <select name="role">
+                <option value="admin">Admin</option>
+                <option value="teacher">Teacher</option>
+                <option value="bursar">Bursar</option>
+            </select>
+            <button type="submit">Signup</button>
+            <p id="message"></p>
+            <p>Already have an account? <a href="login.html">Login</a></p>
         </form>
     </div>
+
+    <script src="app.js"></script>
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const res = await fetch(API_URL + '/signup.php', {
+                method: 'POST',
+                body: new FormData(this),
+            });
+            const data = await res.json();
+
+            if (!res.ok) {
+                showMessage(data.error, true);
+                return;
+            }
+
+            showMessage(data.message + ' Redirecting...', false);
+            setTimeout(() => window.location.href = 'login.html', 1500);
+        });
+    </script>
 </body>
 </html>

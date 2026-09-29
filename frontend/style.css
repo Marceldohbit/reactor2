@@ -37,3 +37,55 @@ h2{
     border-radius: 25px;
     border-style: dashed;
 }
+select{
+    height: 35px;
+    margin: 5%;
+    border-radius: 25px;
+    width: 350px;
+    text-align: center;
+}
+
+/* ---- Dashboard ---- */
+.panel{
+    background-color: white;
+    padding: 15px 25px;
+    border-radius: 15px;
+    margin: 10px;
+    text-align: center;
+    max-width: 90%;
+    overflow-x: auto;
+}
+.panel button{
+    width: 150px;
+    margin: 5px;
+}
+#cards{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.card{
+    background-color: green;
+    color: white;
+    width: 150px;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 15px;
+    text-align: center;
+}
+.card span{
+    display: block;
+    font-size: 32px;
+    font-weight: bold;
+}
+table{
+    border-collapse: collapse;
+}
+th, td{
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+}
+th{
+    background-color: black;
+    color: white;
+}

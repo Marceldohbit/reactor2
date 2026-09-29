@@ -3,19 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login</title>
      <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="main">
         <h2>RHIMBS School Management System</h2>
-        <form method="post" action="http://localhost/backend/login.php">
-        
-            <input type="email" name="email" placeholder="enter your email"/>
-             <input type="password" name="password" placeholder="enter your password"/>
-              <button type="submit" name="login">Login</button>
-              <p>Don't have an account yet? <a href="signup.html">Signup</a></p>
+        <form id="loginForm">
+            <input type="email" name="email" placeholder="enter your email" required/>
+            <input type="password" name="password" placeholder="enter your password" required/>
+            <button type="submit">Login</button>
+            <p id="message"></p>
+            <p>Don't have an account yet? <a href="signup.html">Signup</a></p>
         </form>
     </div>
+
+    <script src="app.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault(); // stop the page from reloading
+
+            const res = await fetch(API_URL + '/login.php', {
+                method: 'POST',
+                body: new FormData(this),
+            });
+            const data = await res.json();
+
+            if (!res.ok) {
+                showMessage(data.error, true);
+                return;
+            }
+
+            // Save the token so the dashboard can prove we are logged in
+            localStorage.setItem('token', data.token);
+            window.location.href = 'dashboard.html';
+        });
+    </script>
 </body>
 </html>
